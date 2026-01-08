@@ -37,6 +37,28 @@ logs/
 *.md
 docs/
 
-# Environment files
+# Environment files (sensitive)
 .env
 .env.*
+*.env
+
+# Secrets and credentials
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+secrets/
+credentials/
+
+# AWS credentials
+.aws/
+
+# Database dumps
+*.sql
+*.dump
+
+# Backup files
+*.bak
+*.backup
+*.old
