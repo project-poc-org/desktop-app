@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copy requirements (currently empty, but may have future deps)
 COPY requirements.txt .
-RUN if [ -s requirements.txt ]; then pip install --no-cache-dir --user -r requirements.txt; fi
+RUN mkdir -p /root/.local && \
+    if [ -s requirements.txt ]; then pip install --no-cache-dir --user -r requirements.txt; fi
 
 # Final stage
 FROM python:3.11-slim
@@ -26,8 +27,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -m -u 1000 -s /bin/bash appuser
 
-# Copy installed packages from builder (if any)
-COPY --from=builder /root/.local /home/appuser/.local
+# Copy installed packages from builder (will be empty if no requirements)
+COPY --from=builder --chown=appuser:appuser /root/.local /home/appuser/.local
 
 # Set working directory
 WORKDIR /app
